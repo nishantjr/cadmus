@@ -1,5 +1,4 @@
 use super::menu::{Menu, MenuKind};
-use super::notification::Notification;
 use super::{AppCmd, EntryId, EntryKind, RenderData, RenderQueue, View, ViewId};
 use crate::battery::Battery as _;
 use crate::device::AppContext;

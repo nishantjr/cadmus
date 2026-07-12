@@ -8,8 +8,10 @@
 use std::collections::BTreeSet;
 use std::path::Path;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use clap::Args;
+
+use build_deps::build::sqlite;
 
 use super::docs::{self, DocsArgs};
 use super::util::{cmd, sqlite_preflight, workspace};
@@ -48,6 +50,8 @@ fn emulator_features(extra: Option<&str>) -> String {
 /// Ensures host SQLite and documentation are built then launches the emulator.
 pub fn run(args: RunEmulatorArgs) -> Result<()> {
     let root = workspace::root()?;
+    sqlite::ensure_sqlite(&root, "x86_64-unknown-linux-gnu")
+        .context("failed to build SQLite for Kobo")?;
 
     sqlite_preflight::ensure_host(&root)?;
 
