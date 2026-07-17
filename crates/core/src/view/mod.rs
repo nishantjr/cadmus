@@ -721,18 +721,6 @@ pub enum SliderId {
     ContrastGray,
 }
 
-impl SliderId {
-    pub fn label(self) -> String {
-        match self {
-            SliderId::LightIntensity => "Intensity".to_string(),
-            SliderId::LightWarmth => "Warmth".to_string(),
-            SliderId::FontSize => "Font Size".to_string(),
-            SliderId::ContrastExponent => "Contrast Exponent".to_string(),
-            SliderId::ContrastGray => "Contrast Gray".to_string(),
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 pub enum Align {
     Left(i32),

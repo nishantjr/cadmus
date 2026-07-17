@@ -114,9 +114,12 @@ impl FrontlightWindow {
                     .unwrap() as i32
             };
 
-            for (index, slider_id) in [SliderId::LightIntensity, SliderId::LightWarmth]
-                .iter()
-                .enumerate()
+            for (index, (slider_id, label_text)) in [
+                (SliderId::LightIntensity, "Intensity"),
+                (SliderId::LightWarmth, "Warmth"),
+            ]
+            .iter()
+            .enumerate()
             {
                 let min_y = rect.min.y + (index + 1) as i32 * small_height;
                 let label = Label::new(
@@ -126,7 +129,7 @@ impl FrontlightWindow {
                         rect.min.x + 2 * padding + max_label_width,
                         min_y + small_height
                     ],
-                    slider_id.label(),
+                    label_text.to_string(),
                     Align::Right(padding / 2),
                 );
                 children.push(Box::new(label) as Box<dyn View>);
