@@ -51,54 +51,6 @@ pub fn overlapping_rectangle(view: &dyn View) -> Rectangle {
     rect
 }
 
-// Transfer the notifications from the view1 to the view2.
-pub fn transfer_notifications(
-    view1: &mut dyn View,
-    view2: &mut dyn View,
-    rq: &mut RenderQueue,
-    context: &mut AppContext,
-) {
-    for index in (0..view1.len()).rev() {
-        if view1.child(index).is::<Notification>() {
-            let mut child = view1.children_mut().remove(index);
-            if view2.rect() != view1.rect() {
-                let (tx, _rx) = mpsc::channel();
-                child.resize(*view2.rect(), &tx, rq, context);
-            }
-            view2.children_mut().push(child);
-        }
-    }
-}
-
-/// Recursively searches the view tree for a notification with the given ViewId.
-///
-/// # Arguments
-///
-/// * `view` - The root view to start searching from
-/// * `id` - The ViewId to search for
-///
-/// # Returns
-///
-/// A mutable reference to the Notification if found, or `None` if not found.
-///
-/// # Note
-///
-/// This function performs a depth-first search through the entire view hierarchy.
-/// It will find the first notification that matches the given id.
-pub fn find_notification_mut(view: &mut dyn View, id: ViewId) -> Option<&mut Notification> {
-    if view.is::<Notification>() && view.view_id() == Some(id) {
-        return view.downcast_mut::<Notification>();
-    }
-
-    for child in view.children_mut() {
-        if let Some(notif) = find_notification_mut(child.as_mut(), id) {
-            return Some(notif);
-        }
-    }
-
-    None
-}
-
 pub fn toggle_main_menu(
     view: &mut dyn View,
     rect: Rectangle,
